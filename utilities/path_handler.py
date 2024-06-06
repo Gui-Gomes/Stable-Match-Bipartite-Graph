@@ -22,7 +22,7 @@ def get_txt_file_in_directory(directory):
         return None
 
 # Return the full path of the first .txt file found in the database directory.
-def get_full_txt_file_path():
+def get_full_path_of_first_database_txt_file():
     try:
         database_directory = get_database_directory()
         if database_directory is not None:

@@ -45,6 +45,8 @@ def generate_csv_from_txt(file_path, output_dir):
 # Function to import data from a CSV file
 def import_data_from_csv(file_path):
     with open(file_path, "r") as file:
+        # Skip the header row
+        next(file)
         data_list = []
         for line in file:
             clean_line = line.strip()

@@ -42,3 +42,4 @@ def generate_csv_from_txt(file_path, output_dir):
                         grade = match.group(3)
                         students_writer.writerow([id_part] + preferred_projects + [grade])
                         
+                        

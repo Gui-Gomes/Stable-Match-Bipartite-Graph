@@ -14,7 +14,7 @@ def get_txt_file_in_directory(directory):
     try:
         txt_files = [file for file in os.listdir(directory) if file.endswith('.txt')]
         if txt_files:
-            return os.path.join(directory, txt_files[0])
+            return txt_files[0]
         else:
             raise FileNotFoundError("No .txt file found in the directory.")
     except Exception as e:
@@ -22,11 +22,16 @@ def get_txt_file_in_directory(directory):
         return None
 
 # Return the full path of the first .txt file found in the database directory.
-def get_full_path_of_first_database_txt_file():
+def get_first_txt_file_path_from_database():
     try:
         database_directory = get_database_directory()
         if database_directory is not None:
-            return get_txt_file_in_directory(database_directory)
+            txt_file = get_txt_file_in_directory(database_directory)
+            if txt_file is not None:
+                return os.path.join(database_directory, txt_file)
+            else:
+                print("No .txt file found in the database directory.")
+                return None
         else:
             print("Database directory not found.")
             return None

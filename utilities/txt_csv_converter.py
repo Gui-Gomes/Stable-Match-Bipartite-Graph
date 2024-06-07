@@ -7,7 +7,6 @@ def generate_csv_from_txt(file_path, output_dir):
     projects_csv = os.path.join(output_dir, "projects.csv")
     students_csv = os.path.join(output_dir, "students.csv")
 
-    # Write headers for CSV files every time the function is called
     # Write projects.csv
     with open(projects_csv, mode='w', newline='') as projects_file:
         projects_writer = csv.writer(projects_file)

@@ -2,6 +2,7 @@ import os
 import re
 import csv
 
+# Generate CSV files from a TXT file containing project and student data.
 def generate_csv_from_txt(file_path, output_dir):
     # Define paths for CSV output files
     projects_csv = os.path.join(output_dir, "projects.csv")
@@ -40,4 +41,15 @@ def generate_csv_from_txt(file_path, output_dir):
                         preferred_projects += [''] * (3 - len(preferred_projects))
                         grade = match.group(3)
                         students_writer.writerow([id_part] + preferred_projects + [grade])
-                        
+
+# Function to import data from a CSV file
+def import_data_from_csv(file_path):
+    with open(file_path, "r") as file:
+        data_list = []
+        for line in file:
+            clean_line = line.strip()
+            data_row = clean_line.split(',')
+            # Convert numeric values to integers if possible
+            data_row = [int(item) if item.isdigit() else item for item in data_row]
+            data_list.append(data_row)
+        return data_list

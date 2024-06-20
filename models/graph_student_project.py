@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 from .student import Student
 from .project import Project
 
@@ -70,7 +71,8 @@ class Graph:
             matched = False  # Flag to indicate if the student has been matched
 
             for project_id in projects_preferences:
-                project = self.projects[project_id]
+                if project_id != '':
+                    project = self.projects[project_id]
 
                 if project.minimum_grade_requirement <= student.grade and project.has_vacancies():
                     # Project has a vacancy and student meets grade requirement
@@ -92,3 +94,28 @@ class Graph:
             project = self.projects.get(project_id)
             if student and project:
                 print(f"Student {student_id} prefers Project {project_id}")
+
+    # Method to generate an image of the bipartite graph with increased spacing between vertices
+    def plot_bipartite_graph(self, file_path, file_name="bipartite_graph.png"):
+        plt.figure(figsize=(19.20, 10.80))  # Set the figure size for Full HD resolution
+
+        # Separate student nodes and project nodes
+        student_nodes = [n for n, d in self.graph.nodes(data=True) if d['bipartite'] == 0]
+        project_nodes = [n for n, d in self.graph.nodes(data=True) if d['bipartite'] == 1]
+
+        # Define positions for the nodes with increased spacing
+        pos = nx.drawing.layout.bipartite_layout(self.graph, student_nodes, align='vertical', aspect_ratio=5)
+
+        # Draw the nodes and edges
+        nx.draw_networkx_nodes(self.graph, pos, nodelist=student_nodes, node_color='lightblue', node_size=1, label='Students')
+        nx.draw_networkx_nodes(self.graph, pos, nodelist=project_nodes, node_color='lightgreen', node_size=50, label='Projects')
+        nx.draw_networkx_edges(self.graph, pos, edge_color='lightgray')
+        nx.draw_networkx_labels(self.graph, pos, font_size=3.5, font_color='black')
+
+        # Add legend and title
+        plt.legend(loc='best')
+        plt.title('Bipartite Graph of Students and Projects')
+
+        # Save the image to a file in the specified directory
+        plt.savefig(file_path + file_name, dpi=700)  # Set dpi to adjust resolution
+        plt.close()

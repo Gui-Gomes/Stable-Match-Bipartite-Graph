@@ -10,7 +10,7 @@ class Project:
     @property
     def id(self):
         return self.__id
-    
+
     # Setter method to set the project ID.
     @id.setter
     def id(self, value):
@@ -20,7 +20,7 @@ class Project:
     @property
     def number_of_vacancies(self):
         return self.__number_of_vacancies
-    
+
     # Setter method to set the number of vacancies for the project.
     @number_of_vacancies.setter
     def number_of_vacancies(self, value):
@@ -30,7 +30,7 @@ class Project:
     @property
     def minimum_grade_requirement(self):
         return self.__minimum_grade_requirement
-    
+
     # Setter method to set the minimum grade requirement.
     @minimum_grade_requirement.setter
     def minimum_grade_requirement(self, value):

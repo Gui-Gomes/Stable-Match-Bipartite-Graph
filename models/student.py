@@ -9,7 +9,7 @@ class Student:
     @property
     def id(self):
         return self.__id
-    
+
     # Setter method for id
     @id.setter
     def id(self, id):
@@ -19,7 +19,7 @@ class Student:
     @property
     def preferential_projects(self):
         return self.__preferential_projects
-    
+
     # Setter method for preferential projects
     @preferential_projects.setter
     def preferential_projects(self, preferential_projects):
@@ -29,7 +29,7 @@ class Student:
     @property
     def grade(self):
         return self.__grade
-    
+
     # Setter method for grade
     @grade.setter
     def grade(self, grade):

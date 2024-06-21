@@ -2,6 +2,7 @@ from utilities.file_handler import *
 from utilities.path_handler import *
 from models.graph_student_project import Graph
 
+
 def main():
     try:
         # Get the csv database directory path
@@ -34,9 +35,6 @@ def main():
         # Perform Gale-Shapley algorithm to match students with projects
         graph.gale_shapley()
 
-        # Print the edges of the graph (matches between students and projects)
-        graph.print_edges()
-
         # Get the images database directory path
         images_database_dir = get_images_directory()
 
@@ -47,6 +45,7 @@ def main():
         print(f"Error: File not found - {e.filename}")
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     main()

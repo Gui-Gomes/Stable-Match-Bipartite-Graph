@@ -63,9 +63,6 @@ class Graph:
     def gale_shapley(self, max_iterations=10):
         for i in range(max_iterations):
             print(f"ITERATION {i + 1}:")
-            changes_made = (
-                False  # Flag to check if any changes were made in this iteration
-            )
             free_students = []
 
             # Collect students who are not currently matched
@@ -88,7 +85,6 @@ class Graph:
                         if project.has_vacancies():
                             project.increment_total_participants()
                             self.graph.add_edge(student_id, project_id)
-                            changes_made = True
                             matched = True
                             break
                         else:
@@ -108,7 +104,6 @@ class Graph:
                                 )
                                 free_students.append(lowest_grade_student_id)
                                 self.graph.add_edge(student_id, project_id)
-                                changes_made = True
                                 matched = True
                                 break
 
@@ -117,26 +112,20 @@ class Graph:
                     if student_id in self.graph:
                         for neighbor in list(self.graph.neighbors(student_id)):
                             self.graph.remove_edge(student_id, neighbor)
-                        changes_made = True
 
             # Print the current state of the edges after each iteration
             self.print_edges()
 
             print(f"Number of edges: {nx.number_of_edges(self.graph)} \n")
 
-            if not changes_made:
-                print("No changes made in this iteration, stopping early.")
-                break
-
-    # Method to print the current edges in the graph
+    # Method to print the current edges in the graph between students and projects
     def print_edges(self):
         print("Current edges in the graph:")
-        for student_id, project_id in self.graph.edges():
-            student = self.students.get(student_id)
-            project = self.projects.get(project_id)
-            if student and project:
-                print(f"Student {student_id} is matched with Project {project_id}")
-        print("\n")
+        print("(STUDENT, PROJECT)")
+        for student_id in self.students:
+            for project_id in self.projects:
+                if self.graph.has_edge(student_id, project_id):
+                    print((student_id, project_id))
 
     # Method to generate an image of the bipartite graph with increased spacing between vertices
     def plot_bipartite_graph(self, file_path, file_name="bipartite_graph.png"):

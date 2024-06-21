@@ -9,11 +9,19 @@ def main():
         csv_database_dir = get_csv_directory()
 
         # Generate CSV files from text files in the database directory
-        generate_csv_from_txt(get_first_txt_file_path_from_database(), csv_database_dir)
+        txt_file = choose_txt_file_from_directory()
+        if not txt_file:
+            print("No valid .txt file chosen.")
+            return
+
+        generate_csv_from_txt(txt_file, csv_database_dir)
 
         # Import students and projects data from CSV files
-        students_data = import_data_from_csv(csv_database_dir + "students.csv")
-        projects_data = import_data_from_csv(csv_database_dir + "projects.csv")
+        students_csv_path = os.path.join(csv_database_dir, "students.csv")
+        projects_csv_path = os.path.join(csv_database_dir, "projects.csv")
+
+        students_data = import_data_from_csv(students_csv_path)
+        projects_data = import_data_from_csv(projects_csv_path)
 
         # Create an instance of the Graph class
         graph = Graph()

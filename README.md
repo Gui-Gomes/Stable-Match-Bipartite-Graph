@@ -84,7 +84,7 @@ python main.py
 
 ## Estrutura do Projeto
 
-[![Screenshot-from-2024-06-21-23-53-34-removebg-preview.png](https://i.postimg.cc/cHLMJW8Z/Screenshot-from-2024-06-21-23-53-34-removebg-preview.png)](https://postimg.cc/jWBJ8GXk)
+[![Screenshot-from-2024-06-21-23-53-34.png](https://i.postimg.cc/RFDBscrt/Screenshot-from-2024-06-21-23-53-34.png)](https://postimg.cc/bDkWdSwY)
 
 ### Database
 

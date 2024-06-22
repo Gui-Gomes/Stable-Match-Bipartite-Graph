@@ -84,28 +84,7 @@ python main.py
 
 ## Estrutura do Projeto
 
-Stable-Match-Bipartite-Graph/
-│
-├── database/
-│   ├── csv/
-│   ├── images/
-│   └── txt/
-│       └── `entradaProj2TAG.txt`
-│
-├── models/
-│   ├── `__init__.py`
-│   ├── `graph_student_project.py`
-│   ├── `project.py`
-│   └── `student.py`
-│
-├── utilities/
-│   ├── `__init__.py`
-│   ├── `file_handler.py`
-│   └── `path_handler.py`
-│
-├── `README.md`
-├── `.gitignore`
-└── `main.py`
+[![Screenshot-from-2024-06-21-23-53-34-removebg-preview.png](https://i.postimg.cc/cHLMJW8Z/Screenshot-from-2024-06-21-23-53-34-removebg-preview.png)](https://postimg.cc/jWBJ8GXk)
 
 ### Database
 

@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import random
 from .student import Student
 from .project import Project
 
@@ -71,7 +72,8 @@ class Graph:
                     free_students.append(student_id)
 
             while free_students:
-                student_id = free_students.pop(0)
+                student_id = random.choice(free_students)
+                free_students.remove(student_id)
                 student = self.students[student_id]
                 projects_preferences = student.preferential_projects
 

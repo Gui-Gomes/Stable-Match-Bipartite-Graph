@@ -122,43 +122,75 @@ Além dos diretórios específicos, o projeto inclui os seguintes arquivos princ
 
 ## O Algoritmo Gale-Shapley na Perspectiva deste Projeto
 
-O algoritmo Gale-Shapley, nomeado em homenagem aos matemáticos David Gale e Lloyd Shapley, é uma técnica clássica de emparelhamento na teoria dos jogos cooperativos, amplamente reconhecida por seu papel na resolução do problema de alocação estável e eficiente de recursos. Proposto originalmente em 1962, este método é implementado como parte da classe **Graph** no arquivo `graph_student_project.py` do pacote **models**. Operando em um grafo bipartido, ele facilita o emparelhamento de estudantes a projetos com base em suas preferências individuais e nas restrições específicas de cada projeto, como requisitos mínimos de nota e disponibilidade de vagas. Essa abordagem não apenas maximiza a satisfação dos estudantes ao serem alocados a projetos preferidos, mas também garante que cada projeto seja preenchido de maneira ótima, promovendo eficiência e equidade no processo de alocação.
+O algoritmo Gale-Shapley, desenvolvido por David Gale e Lloyd Shapley em 1962, é uma técnica fundamental na teoria dos jogos cooperativos, amplamente reconhecida por resolver o problema do casamento estável. Este algoritmo facilita o emparelhamento de dois conjuntos de participantes com base em suas preferências, assegurando que não existam pares que preferem uns aos outros mais do que seus parceiros atuais. Esta análise examina uma adaptação do algoritmo Gale-Shapley implementada na classe **Graph** do arquivo **graph_student_project.py**, usada para alocar estudantes a projetos de acordo com suas preferências e restrições específicas, como requisitos mínimos de nota e disponibilidade de vagas.
 
 ### Funcionamento Detalhado:
 
 #### 1. Inicialização:
 
-- Os estudantes e projetos são representados como vértices em um grafo bipartido utilizando NetworkX. Estudantes são de um tipo (bipartite=0) e projetos são de outro tipo (bipartite=1).
-- Cada estudante possui uma lista ordenada de preferências por projetos, refletindo sua ordem de prioridade.
+- O grafo bipartido é construído utilizando a biblioteca NetworkX, com estudantes e projetos representados como nós. Estudantes são de um tipo (bipartite=0) e projetos de outro (bipartite=1).
+- Cada estudante tem uma lista ordenada de preferências por projetos, refletindo sua ordem de prioridade.
+- O grafo inicializa duas estruturas principais: `self.__students` para armazenar os estudantes e `self.__projects` para armazenar os projetos, ambos como dicionários para fácil acesso e manipulação.
 
-#### 2. Processo Iterativo:
+#### 2. Adição de Nós ao Grafo:
 
-- O algoritmo é iterado por um número fixo de vezes (`max_iterations`), onde cada iteração potencialmente atualiza os emparelhamentos entre estudantes e projetos.
-- Em cada iteração, o algoritmo verifica quais estudantes ainda estão "livres" (não alocados a nenhum projeto).
+- **Estudantes:** O método `add_student` adiciona estudantes ao grafo e à estrutura de dados, atribuindo a cada estudante um conjunto de projetos preferenciais e uma nota.
+- **Projetos:** A função `add_project` adiciona projetos ao grafo, definindo o número de vagas disponíveis e o requisito mínimo de nota.
 
-#### 3. Emparelhamento de Preferência:
+#### 3. Processo Iterativo:
 
-- Para cada estudante livre, o algoritmo tenta associá-lo ao projeto mais alto em sua lista de preferências que ainda tem vagas disponíveis e cujo requisito mínimo de nota é atendido.
-- Se um estudante não consegue ser associado a nenhum projeto na iteração atual, ele permanece livre para tentativas futuras.
+- O algoritmo realiza um número fixo de iterações (`max_iterations`). Em cada iteração, ele potencialmente atualiza os emparelhamentos entre estudantes e projetos.
+- Durante cada iteração, o algoritmo identifica quais estudantes ainda estão "livres" (não alocados a nenhum projeto) e adiciona esses estudantes a uma lista de estudantes livres (`free_students`).
   
-#### 4. Mecanismo de Atribuição:
+#### 4. Emparelhamento de Preferência:
+
+- Cada estudante livre tenta ser associado ao projeto mais alto em sua lista de preferências que ainda tenha vagas disponíveis e cujo requisito mínimo de nota seja atendido.
+- Se um estudante não consegue ser associado a nenhum projeto na iteração atual, ele permanece livre para tentativas futuras.
+- Se um projeto está cheio, o algoritmo verifica se o estudante pode substituir um estudante de menor nota já emparelhado ao projeto. Se a substituição for possível, ela é realizada, e o estudante desalojado retorna ao pool de estudantes livres.
+
+#### 5. Mecanismo de Atribuição:
 
 - Quando um estudante é aceito em um projeto, o grafo bipartido é atualizado para refletir essa conexão (`self.graph.add_edge(student_id, project_id)`).
-- Se um estudante substitui outro devido a uma nota mais alta ou outro critério específico, o estudante desalojado retorna ao pool de estudantes livres.
-
-#### 5. Convergência e Estabilidade:
+- Se um estudante pode substituir outro devido a uma nota mais alta ou outro critério específico, o estudante desalojado retorna ao pool de estudantes livres.
+  
+#### 6. Convergência e Estabilidade:
 
 - O processo continua até que todos os estudantes sejam alocados de forma estável, isto é, até que não haja mais estudantes livres que possam ser alocados a projetos dentro das condições especificadas.
-  
-#### 6. Saída e Avaliação:
-
-- Após cada iteração, o estado atual dos emparelhamentos é impresso para monitorar o progresso e a distribuição dos estudantes nos projetos.
+- A cada iteração, o estado atual dos emparelhamentos é impresso para monitorar o progresso e a distribuição dos estudantes nos projetos.
 - Ao final das iterações, o número total de arestas no grafo bipartido representa a quantidade final de emparelhamentos estáveis alcançados pelo algoritmo.
+
+#### 7. Visualização do Grafo:
+
+- O método `plot_bipartite_graph` permite a visualização do grafo bipartido, onde estudantes e projetos são representados como nós distintos, com espaçamento aumentado entre os vértices para melhor clareza.
+- Esta visualização facilita a análise visual dos emparelhamentos e a estrutura do grafo, ajudando na identificação de padrões.
+
+### Comparação com o Algoritmo Original
+
+#### Semelhanças
+
+- **Propostas Iterativas:** Assim como no algoritmo original, estudantes fazem propostas iterativas a projetos baseando-se em suas preferências.
+- **Uso de Preferências:** As listas de preferências dos estudantes guiam as propostas de forma sequencial.
+- **Estabilidade:** O algoritmo busca garantir emparelhamentos estáveis, ajustando-os de acordo com as notas dos estudantes, similar ao processo de rejeição e aceitação no algoritmo original.
+
+#### Diferenças
+
+- **Critérios Adicionais:** Além das preferências, há um critério adicional de nota mínima para os projetos, o que não está presente no problema original de casamento estável.
+- **Capacidade dos Projetos:** Projetos têm um número limitado de vagas, diferente do casamento estável onde cada pessoa pode se emparelhar com apenas uma outra pessoa.
+- **Substituição de Emparelhamentos:** Se um projeto está cheio, o algoritmo verifica se um novo estudante pode substituir um estudante de menor nota já emparelhado ao projeto, introduzindo um mecanismo de substituição para otimização contínua dos emparelhamentos.
+
+### Vantagens da Adaptação
+
+**1. Consideração de Mérito Acadêmico:** A inclusão de um critério de nota mínima para projetos garante que os estudantes com melhor desempenho acadêmico tenham preferência em projetos mais competitivos.
+
+**2. Otimização de Recursos:** A capacidade limitada dos projetos é respeitada, refletindo melhor situações reais onde recursos e vagas são limitados.
+
+**3. Melhoria Contínua dos Emparelhamentos:** A possibilidade de substituição de estudantes em projetos cheios por aqueles com notas superiores permite uma otimização contínua, buscando emparelhamentos mais eficientes.
+
+**4. Eficiência e Equidade:** O algoritmo busca maximizar a satisfação dos estudantes ao alocá-los a projetos preferidos, enquanto assegura que cada projeto seja preenchido de maneira ótima, promovendo tanto eficiência quanto equidade no processo de alocação.
 
 ### Considerações Finais:
 
-O algoritmo Gale-Shapley é robusto para problemas de emparelhamento como este, garantindo que todos os estudantes sejam alocados da melhor maneira possível de acordo com suas preferências e as restrições dos projetos. Ele exemplifica um método eficaz para resolver problemas de alocação com critérios específicos, com aplicações amplas em economia, teoria dos jogos e otimização combinatória.
-
+O algoritmo Gale-Shapley adaptado para a alocação de estudantes a projetos exemplifica um método robusto e eficaz para resolver problemas de emparelhamento com critérios específicos. Ao incorporar preferências e desempenho acadêmico, o algoritmo não apenas maximiza a satisfação dos estudantes ao serem alocados a projetos preferidos, mas também garante que cada projeto seja preenchido de maneira ótima. Esta adaptação mantém o espírito iterativo e de melhoria contínua do algoritmo original, promovendo eficiência e equidade no processo de alocação, com amplas aplicações em economia, teoria dos jogos e otimização combinatória. A inclusão de visualização gráfica melhora ainda mais a compreensão e análise dos emparelhamentos, facilitando a identificação de possíveis ajustes e melhorias.
 
 ## Licença
 
